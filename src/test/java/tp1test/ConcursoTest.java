@@ -1,11 +1,11 @@
 package tp1test;
+
 import org.example.Concurso;
-import org.example.Inscripcion;
 import org.example.Participante;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ConcursoTest {
@@ -16,13 +16,12 @@ public class ConcursoTest {
         var jose = new Participante("234566", "Jose Perez");
         LocalDate fechaInicio = LocalDate.of(2025, 3, 1);
         LocalDate fechaFin = LocalDate.of(2025, 3, 31);
+        LocalDate fechaInscripcion = LocalDate.of(2025, 3, 1);
         Concurso unConcurso = new Concurso("Un Concurso", fechaInicio, fechaFin);
-        unConcurso.nuevaInscripcion(new Inscripcion(jose, unConcurso, LocalDateTime.now()));
-        //Inscripcion.inscribirAEn(jose, unConcurso);
+        //exercise
+        unConcurso.nuevaInscripcion(jose, fechaInscripcion);
+        //verify
         assertTrue(unConcurso.participanteInscripto(jose));
-        //probar contains
-        //la implementacion del método contains usa equals
-
         assertEquals(1, unConcurso.cantidadInscriptos());
     }
 
@@ -33,16 +32,15 @@ public class ConcursoTest {
         var maria = new Participante("234567", "Maria Perez");
         LocalDate fechaInicio = LocalDate.of(2025, 3, 1);
         LocalDate fechaFin = LocalDate.of(2025, 3, 31);
-        LocalDateTime fechaInscripcion= fechaInicio.atStartOfDay();
+
         Concurso unConcurso = new Concurso("Un Concurso", fechaInicio, fechaFin);
         //exercise
-        unConcurso.nuevaInscripcion(new Inscripcion(maria, unConcurso, fechaInscripcion));
-        //Inscripcion.inscribirAEn(jose, unConcurso);
-
+        unConcurso.nuevaInscripcion(maria, fechaInicio);
         //verify
         assertTrue(unConcurso.participanteInscripto(maria));
         assertEquals(1, unConcurso.cantidadInscriptos());
     }
+
     @Test
     public void test03() {
         //un participante intenta inscribirse fuera del rango de inscripción
@@ -50,18 +48,14 @@ public class ConcursoTest {
         var juana = new Participante("234567", "Juana Perez");
         LocalDate fechaInicio = LocalDate.of(2025, 3, 1);
         LocalDate fechaFin = LocalDate.of(2025, 3, 31);
-        LocalDate fechaInscripcion1 = LocalDate.of(2025, 2,31);
-        LocalDateTime fechaInscripcion2= fechaInscripcion1.atStartOfDay();
+        LocalDate fechaInscripcion = LocalDate.of(2025, 5, 31);
         Concurso unConcurso = new Concurso("Un Concurso", fechaInicio, fechaFin);
         //exercise
-        unConcurso.nuevaInscripcion(new Inscripcion(juana, unConcurso, fechaInscripcion2));
-        //Inscripcion.inscribirAEn(jose, unConcurso);
-
+        unConcurso.nuevaInscripcion(juana, fechaInscripcion);
         //verify
-        //assertFalse(unConcurso.participanteInscripto(juana));
-        assertEquals(1, unConcurso.cantidadInscriptos());
-        //asertThrows(), si lanza la excepción,
-            //no se agregó a la colección
+        assertEquals(0, unConcurso.cantidadInscriptos());
+        //assertThrows(RuntimeException.class, () -> unConcurso.nuevaInscripcion(juana, fechaInscripcion), "La fecha está fuera del rango de inscripción...");
+        assertFalse(unConcurso.participanteInscripto(juana));
     }
 
 }

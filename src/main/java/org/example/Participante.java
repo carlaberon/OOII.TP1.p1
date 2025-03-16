@@ -13,8 +13,8 @@ public class Participante {
         this.nombre = nombre;
     }
 
-    public void sumarPuntos(int points){
-        this.puntos = this.puntos + points;
+    public void sumarPuntos() {
+        this.puntos += puntos;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class Participante {
         if (o == null || getClass() != o.getClass()) return false;
         Participante that = (Participante) o;
         return Objects.equals(nombre, that.nombre);
-    }
+    }        /*the implementation of  the method contains use equals*/
 
     @Override
     public int hashCode() {

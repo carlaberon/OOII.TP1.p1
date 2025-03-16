@@ -18,20 +18,7 @@ public class Inscripcion {
         return this.participante.equals(participante);
     }
 
-    public boolean isBefore(Inscripcion nuevaIncripcion){
-        LocalDate fechaIncripcion = nuevaIncripcion.obtenerFechaInscripcion();
-        var before = fechaIncripcion.isBefore(this.concurso.obtenerFechaInicio());
-        //verifica que la primer fecha sea anterior a la segunda fecha
-        return before;
-    }
-    public boolean isAfter(Inscripcion nuevaIncripcion){
-        LocalDate fechaInscripcion = nuevaIncripcion.obtenerFechaInscripcion();
-        var before = fechaInscripcion.isAfter(this.concurso.obtenerFechaFin());
-        //verifica que la primer fecha sea posterior a la segunda fecha
-        return before;
-    }
-
-    public LocalDate obtenerFechaInscripcion(){
+    public LocalDate obtenerFechaInscripcion() {
         LocalDate fechaIncripcion = this.fechaInscripcion.toLocalDate();
         return fechaIncripcion;
     }
