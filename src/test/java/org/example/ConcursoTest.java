@@ -1,7 +1,5 @@
-package tp1test;
+package org.example;
 
-import org.example.Concurso;
-import org.example.Participante;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
