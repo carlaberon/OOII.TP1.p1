@@ -47,12 +47,27 @@ public class ConcursoTest {
         LocalDate fechaFin = LocalDate.of(2025, 3, 31);
         LocalDate fechaInscripcion = LocalDate.of(2025, 5, 31);
         Concurso unConcurso = new Concurso("Un Concurso", fechaInicio, fechaFin);
-        //exercise & verify
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> unConcurso.nuevaInscripcion(juana, fechaInscripcion)); //puedo usar assert en exercise?
-        //verify
+//        //opcion 1
+//        //exercise & verify
+//        RuntimeException exception = assertThrows(RuntimeException.class, () -> unConcurso.nuevaInscripcion(juana, fechaInscripcion)); //puedo usar assert en exercise?
+//        //verify
+//        assertEquals("La fecha está fuera del rango de inscripción...", exception.getMessage());
+//        assertEquals(0, unConcurso.cantidadInscriptos());
+//        assertFalse(unConcurso.participanteInscripto(juana));
+
+        // opcion 2 separar exercise de verify
+        RuntimeException exception = null;
+        try {
+            unConcurso.nuevaInscripcion(juana, fechaInscripcion);
+        } catch (RuntimeException e) {
+            exception = e;
+        }
+        //Verify
+        assertNotNull(exception);
         assertEquals("La fecha está fuera del rango de inscripción...", exception.getMessage());
         assertEquals(0, unConcurso.cantidadInscriptos());
         assertFalse(unConcurso.participanteInscripto(juana));
+
     }
 
 }
