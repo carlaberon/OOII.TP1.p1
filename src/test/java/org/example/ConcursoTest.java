@@ -30,7 +30,6 @@ public class ConcursoTest {
         var maria = new Participante("234567", "Maria Perez");
         LocalDate fechaInicio = LocalDate.of(2025, 3, 1);
         LocalDate fechaFin = LocalDate.of(2025, 3, 31);
-
         Concurso unConcurso = new Concurso("Un Concurso", fechaInicio, fechaFin);
         //exercise
         unConcurso.nuevaInscripcion(maria, fechaInicio);
@@ -48,11 +47,11 @@ public class ConcursoTest {
         LocalDate fechaFin = LocalDate.of(2025, 3, 31);
         LocalDate fechaInscripcion = LocalDate.of(2025, 5, 31);
         Concurso unConcurso = new Concurso("Un Concurso", fechaInicio, fechaFin);
-        //exercise
-        unConcurso.nuevaInscripcion(juana, fechaInscripcion);
+        //exercise & verify
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> unConcurso.nuevaInscripcion(juana, fechaInscripcion)); //puedo usar assert en exercise?
         //verify
+        assertEquals("La fecha está fuera del rango de inscripción...", exception.getMessage());
         assertEquals(0, unConcurso.cantidadInscriptos());
-        //assertThrows(RuntimeException.class, () -> unConcurso.nuevaInscripcion(juana, fechaInscripcion), "La fecha está fuera del rango de inscripción...");
         assertFalse(unConcurso.participanteInscripto(juana));
     }
 
