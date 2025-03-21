@@ -1,17 +1,21 @@
 package org.example;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Concurso {
+    private static int contadorId = 1;
     private final String nombre;
+    private int id;
     private List<Participante> inscriptos;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private LocalDate fechaInscripcion;
+    private Exportador exportador;
 
-    public Concurso(String nombre, LocalDate fechaInicio, LocalDate fechaFin) {
+    public Concurso(String nombre, LocalDate fechaInicio, LocalDate fechaFin, Exportador exportador) {
         if (fechaInicio.isAfter(fechaFin)) {
             throw new RuntimeException("Fecha incorrecta...");
         }
@@ -22,6 +26,12 @@ public class Concurso {
         this.inscriptos = new ArrayList<>();
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
+        this.id = contadorId++;
+        this.exportador = exportador;
+    }
+
+    public void export() {
+        this.exportador.export(this.toCSV());
     }
 
     public boolean participanteInscripto(Participante participante) {
@@ -34,6 +44,24 @@ public class Concurso {
         } else {
             gestionarInscripcion(participante, fechaInscripcion);
         }
+
+    }
+
+    public String toCSV() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("dd/mm/yyyy, id_participante, id_concurso").append(System.lineSeparator());
+        sb.append(formatearFecha(fechaInscripcion)).append(",").append(participante().id()).append(",").append(this.id).append(System.lineSeparator());
+        return sb.toString();
+    }
+
+    public String formatearFecha(LocalDate fechaInscripcion) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String fechaFormateada = fechaInscripcion.format(formatter);
+        return fechaFormateada;
+    }
+
+    public Participante participante() {
+        return inscriptos.get(inscriptos.size() - 1);
     }
 
     public boolean validarFechas(LocalDate fechaInscripcion) {
@@ -43,6 +71,7 @@ public class Concurso {
     public void gestionarInscripcion(Participante participante, LocalDate fechaInscripcion) {
         if (!participanteInscripto(participante)) {
             this.inscriptos.add(participante);
+            this.fechaInscripcion = fechaInscripcion;
             gestionarPuntos(participante, fechaInscripcion);
         }
     }
@@ -55,6 +84,10 @@ public class Concurso {
 
     public int cantidadInscriptos() {
         return this.inscriptos.size();
+    }
+
+    public int id() {
+        return this.id;
     }
 
 

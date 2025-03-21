@@ -4,6 +4,8 @@ import java.util.Objects;
 
 public class Participante {
 
+    private static int contadorId = 1;
+    private int id;
     private String dni;
     private String nombre;
     private int puntos;
@@ -11,6 +13,7 @@ public class Participante {
     public Participante(String dni, String nombre) {
         this.dni = dni;
         this.nombre = nombre;
+        this.id = contadorId++;
     }
 
     public void sumarPuntos() {
@@ -27,5 +30,9 @@ public class Participante {
     @Override
     public int hashCode() {
         return Objects.hashCode(nombre);
+    }
+
+    public int id() {
+        return this.id;
     }
 }
