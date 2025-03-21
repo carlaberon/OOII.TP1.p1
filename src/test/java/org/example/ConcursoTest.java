@@ -93,6 +93,7 @@ public class ConcursoTest {
         //Verify
         assertEquals(null, exportador.data());
         assertNotNull(exception);
+        assertNotNull(fechaInvalida);
         assertEquals("La fecha está fuera del rango de inscripción...", exception.getMessage());
         assertEquals("La fecha no es válida :La fecha de inscripción no puede ser null", fechaInvalida.getMessage());
         assertEquals(0, unConcurso.cantidadInscriptos());
