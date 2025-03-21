@@ -7,25 +7,31 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ConcursoTest {
-//    @Test
-//    public void test01() {
-//        //un participante se inscribe en un concurso
-//        //setup
-//        var jose = new Participante("234566", "Jose Perez");
-//        LocalDate fechaInicio = LocalDate.of(2025, 3, 1);
-//        LocalDate fechaFin = LocalDate.of(2025, 3, 31);
-//        LocalDate fechaInscripcion = LocalDate.of(2025, 3, 1);
-//        Concurso unConcurso = new Concurso("Un Concurso", fechaInicio, fechaFin);
-//        //exercise
-//        unConcurso.nuevaInscripcion(jose, fechaInscripcion);
-//        //verify
-//        assertTrue(unConcurso.participanteInscripto(jose));
-//        assertEquals(1, unConcurso.cantidadInscriptos());
-//    }
+    @Test
+    public void test01() throws IllegalAccessException {
+        //un participante se inscribe en un concurso
+        //setup
+        var jose = new Participante("234566", "Jose Perez");
+        var exportador = new EnMemoriaExportador();
+        LocalDate fechaInicio = LocalDate.of(2025, 3, 1);
+        LocalDate fechaFin = LocalDate.of(2025, 3, 31);
+        LocalDate fechaInscripcion = LocalDate.of(2025, 3, 15);
+        Concurso unConcurso = new Concurso("Un Concurso", fechaInicio, fechaFin, exportador);
+        //exercise
+        unConcurso.nuevaInscripcion(jose, fechaInscripcion);
+        unConcurso.export();
+        String esperado = "dd/mm/yyyy, id_participante, id_concurso\n" +
+                "15/03/2025,1,1\n";
+        //verify
+        assertEquals(esperado.replace("\n", System.lineSeparator()), exportador.data());
+        //verify
+        assertTrue(unConcurso.participanteInscripto(jose));
+        assertEquals(1, unConcurso.cantidadInscriptos());
+    }
 
 
     @Test
-    public void test02() {
+    public void test02() throws IllegalAccessException {
         //un participante se inscribe en un concurso el primer dia de abierta la inscripción
         //setup
         var maria = new Participante("234567", "Maria Perez");
@@ -35,9 +41,13 @@ public class ConcursoTest {
         Concurso unConcurso = new Concurso("Un Concurso", fechaInicio, fechaFin, exportador);
         //exercise
         unConcurso.nuevaInscripcion(maria, fechaInicio);
-        unConcurso.export();
+        try {
+            unConcurso.export();
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
         String esperado = "dd/mm/yyyy, id_participante, id_concurso\n" +
-                "01/03/2025,1,1\n";
+                "01/03/2025,2,2\n";
         //verify
         assertEquals(esperado.replace("\n", System.lineSeparator()), exportador.data());
         assertTrue(unConcurso.participanteInscripto(maria));
@@ -46,7 +56,7 @@ public class ConcursoTest {
     }
 
     @Test
-    public void test03() {
+    public void test03() throws IllegalAccessException {
         //un participante intenta inscribirse fuera del rango de inscripción
         //setup
         var exportador = new EnMemoriaExportador();
@@ -70,20 +80,21 @@ public class ConcursoTest {
         RuntimeException exception = null;
         try {
             unConcurso.nuevaInscripcion(juana, fechaInscripcion);
-        } catch (RuntimeException e) {
-            exception = e;
+        } catch (RuntimeException exception1) {
+            exception = exception1;
+        }
+        IllegalAccessException fechaInvalida = null;
+        try {
+            unConcurso.export();
+        } catch (IllegalAccessException e) {
+            fechaInvalida = e;
         }
 
-/*      hay que verificar otras cosas, la inscripción no se realiza por lo tanto no hay fecha de inscripcion
-        si no hay fecha de inscripción, ¿exportador.data qué hace? 
-        unConcurso.export();
-        String esperado = "dd/mm/yyyy, id_participante, id_concurso\n" +
-                "05/03/2025,1,1\n";
-        assertEquals(esperado.replace("\n", System.lineSeparator()), exportador.data());*/
-
         //Verify
+        assertEquals(null, exportador.data());
         assertNotNull(exception);
         assertEquals("La fecha está fuera del rango de inscripción...", exception.getMessage());
+        assertEquals("La fecha no es válida :La fecha de inscripción no puede ser null", fechaInvalida.getMessage());
         assertEquals(0, unConcurso.cantidadInscriptos());
         assertFalse(unConcurso.participanteInscripto(juana));
 

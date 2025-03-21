@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Concurso {
+    public static final String FECHAINSCRIPCION_VACIA = "La fecha de inscripción no puede ser null";
     private static int contadorId = 1;
     private final String nombre;
     private int id;
@@ -30,7 +31,7 @@ public class Concurso {
         this.exportador = exportador;
     }
 
-    public void export() {
+    public void export() throws IllegalAccessException {
         this.exportador.export(this.toCSV());
     }
 
@@ -47,14 +48,23 @@ public class Concurso {
 
     }
 
-    public String toCSV() {
+    public String toCSV() throws IllegalAccessException {
         StringBuilder sb = new StringBuilder();
         sb.append("dd/mm/yyyy, id_participante, id_concurso").append(System.lineSeparator());
+        try {
+            String fechaFormateada = formatearFecha(fechaInscripcion);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalAccessException("La fecha no es válida :" + e.getMessage());
+        }
+
         sb.append(formatearFecha(fechaInscripcion)).append(",").append(participante().id()).append(",").append(this.id).append(System.lineSeparator());
         return sb.toString();
     }
 
     public String formatearFecha(LocalDate fechaInscripcion) {
+        if (fechaInscripcion == null) {
+            throw new IllegalArgumentException(FECHAINSCRIPCION_VACIA);
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String fechaFormateada = fechaInscripcion.format(formatter);
         return fechaFormateada;
