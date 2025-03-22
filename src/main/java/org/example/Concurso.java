@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Concurso {
-    public static final String FECHAINSCRIPCION_VACIA = "La fecha de inscripción no puede ser null";
+    static final String FECHAINSCRIPCION_VACIA = "La fecha de inscripción no puede ser null";
+    static final String FECHA_INSCRIPCION_INCORRECTA = "Fecha incorrecta...";
+    static final String FECHA_FUERA_DE_RANGO = "La fecha está fuera del rango de inscripción...";
     private static int contadorId = 1;
     private final String nombre;
     private int id;
@@ -14,25 +16,22 @@ public class Concurso {
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private LocalDate fechaInscripcion;
-    private Exportador exportador;
+    private RegistroInscriptos registro;
 
-    public Concurso(String nombre, LocalDate fechaInicio, LocalDate fechaFin, Exportador exportador) {
+    public Concurso(String nombre, LocalDate fechaInicio, LocalDate fechaFin, RegistroInscriptos registro) {
         if (fechaInicio.isAfter(fechaFin)) {
-            throw new RuntimeException("Fecha incorrecta...");
+            throw new RuntimeException(FECHA_INSCRIPCION_INCORRECTA);
         }
         if (fechaFin.isBefore(fechaInicio)) {
-            throw new RuntimeException("Fecha incorrecta...");
+            throw new RuntimeException(FECHA_INSCRIPCION_INCORRECTA);
         }
         this.nombre = nombre;
         this.inscriptos = new ArrayList<>();
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.id = contadorId++;
-        this.exportador = exportador;
-    }
+        this.registro = registro;
 
-    public void export() throws IllegalAccessException {
-        this.exportador.export(this.toCSV());
     }
 
     public boolean participanteInscripto(Participante participante) {
@@ -41,7 +40,7 @@ public class Concurso {
 
     public void nuevaInscripcion(Participante participante, LocalDate fechaInscripcion) {
         if (validarFechas(fechaInscripcion)) {
-            throw new RuntimeException("La fecha está fuera del rango de inscripción...");
+            throw new RuntimeException(FECHA_FUERA_DE_RANGO);
         } else {
             gestionarInscripcion(participante, fechaInscripcion);
         }
@@ -83,6 +82,9 @@ public class Concurso {
             this.inscriptos.add(participante);
             this.fechaInscripcion = fechaInscripcion;
             gestionarPuntos(participante, fechaInscripcion);
+            //generar un archivo de texto, crear un archivo de texto, fecha +idparticipante + idconcurso
+            //File object
+            this.registro.registrarInscripto(fechaInscripcion, participante.id(), this.id);
         }
     }
 
