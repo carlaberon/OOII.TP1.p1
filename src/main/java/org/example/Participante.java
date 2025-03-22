@@ -4,16 +4,15 @@ import java.util.Objects;
 
 public class Participante {
 
-    private static int contadorId = 1;
     private int id;
     private String dni;
     private String nombre;
     private int puntos;
 
-    public Participante(String dni, String nombre) {
+    public Participante(String dni, String nombre, int id) {
         this.dni = dni;
         this.nombre = nombre;
-        this.id = contadorId++;
+        this.id = id;
     }
 
     public void sumarPuntos() {

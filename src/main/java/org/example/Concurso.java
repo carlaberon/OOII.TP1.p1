@@ -9,7 +9,7 @@ public class Concurso {
     static final String FECHAINSCRIPCION_VACIA = "La fecha de inscripción no puede ser null";
     static final String FECHA_INSCRIPCION_INCORRECTA = "Fecha incorrecta...";
     static final String FECHA_FUERA_DE_RANGO = "La fecha está fuera del rango de inscripción...";
-    private static int contadorId = 1;
+
     private final String nombre;
     private int id;
     private List<Participante> inscriptos;
@@ -18,7 +18,7 @@ public class Concurso {
     private LocalDate fechaInscripcion;
     private RegistroInscriptos registro;
 
-    public Concurso(String nombre, LocalDate fechaInicio, LocalDate fechaFin, RegistroInscriptos registro) {
+    public Concurso(int id, String nombre, LocalDate fechaInicio, LocalDate fechaFin, RegistroInscriptos registro) {
         if (fechaInicio.isAfter(fechaFin)) {
             throw new RuntimeException(FECHA_INSCRIPCION_INCORRECTA);
         }
@@ -29,7 +29,7 @@ public class Concurso {
         this.inscriptos = new ArrayList<>();
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
-        this.id = contadorId++;
+        this.id = id;
         this.registro = registro;
 
     }
