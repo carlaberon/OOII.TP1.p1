@@ -1,14 +1,13 @@
 package org.example;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Concurso {
-    static final String FECHAINSCRIPCION_VACIA = "La fecha de inscripción no puede ser null";
-    static final String FECHA_INSCRIPCION_INCORRECTA = "Fecha incorrecta...";
-    static final String FECHA_FUERA_DE_RANGO = "La fecha está fuera del rango de inscripción...";
+    final String FECHAINSCRIPCION_VACIA = "La fecha de inscripción no puede ser null";
+    final String FECHA_INSCRIPCION_INCORRECTA = "Fecha incorrecta...";
+    final String FECHA_FUERA_DE_RANGO = "La fecha está fuera del rango de inscripción...";
 
     private final String nombre;
     private int id;
@@ -48,28 +47,20 @@ public class Concurso {
         }
 
     }
+//
+//    public String toCSV() throws IllegalAccessException {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("dd/mm/yyyy, id_participante, id_concurso").append(System.lineSeparator());
+//        try {
+//            String fechaFormateada = formatearFecha(fechaInscripcion);
+//        } catch (IllegalArgumentException e) {
+//            throw new IllegalAccessException("La fecha no es válida :" + e.getMessage());
+//        }
+//
+//        sb.append(formatearFecha(fechaInscripcion)).append(",").append(participante().id()).append(",").append(this.id).append(System.lineSeparator());
+//        return sb.toString();
+//    }
 
-    public String toCSV() throws IllegalAccessException {
-        StringBuilder sb = new StringBuilder();
-        sb.append("dd/mm/yyyy, id_participante, id_concurso").append(System.lineSeparator());
-        try {
-            String fechaFormateada = formatearFecha(fechaInscripcion);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalAccessException("La fecha no es válida :" + e.getMessage());
-        }
-
-        sb.append(formatearFecha(fechaInscripcion)).append(",").append(participante().id()).append(",").append(this.id).append(System.lineSeparator());
-        return sb.toString();
-    }
-
-    public String formatearFecha(LocalDate fechaInscripcion) {
-        if (fechaInscripcion == null) {
-            throw new IllegalArgumentException(FECHAINSCRIPCION_VACIA);
-        }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String fechaFormateada = fechaInscripcion.format(formatter);
-        return fechaFormateada;
-    }
 
     public Participante participante() {
         return inscriptos.get(inscriptos.size() - 1);
@@ -84,8 +75,6 @@ public class Concurso {
             this.inscriptos.add(participante);
             this.fechaInscripcion = fechaInscripcion;
             gestionarPuntos(participante, fechaInscripcion);
-            //generar un archivo de texto, crear un archivo de texto, fecha +idparticipante + idconcurso
-            //File object
             this.registro.registrarInscripto(fechaInscripcion, participante.id(), this.id);
             this.servicioMensajeria.enviarCorreo(participante.email(), "Inscripción", "Usted a realizado la inscripción...");
         }

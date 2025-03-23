@@ -7,12 +7,13 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ConcursoTest {
+
     @Test
     public void test01() throws IllegalAccessException {
         //un participante se inscribe en un concurso
         //setup
-        var jose = new Participante("234566", "Jose Perez", 1, "archcarlab@gmail.com");
-        var maria = new Participante("234567", "Maria Perez", 2, "archcarlab@gmail.com");
+        var jose = new Participante("234566", "Jose Perez", 1, "jperez@gmail.com");
+        var maria = new Participante("234567", "Maria Perez", 2, "mperez@gmail.com");
         LocalDate fechaInicio = LocalDate.of(2025, 3, 1);
         LocalDate fechaFin = LocalDate.of(2025, 3, 31);
         LocalDate fechaInscripcion = LocalDate.of(2025, 3, 15);
@@ -20,17 +21,22 @@ public class ConcursoTest {
 //        var registro = new ArchivoDeInscriptos("F:\\proyectos\\sistemas\\materias2025\\primer cuatrimestre\\orientacion a objetos II\\carpeta\\registroInscriptos.txt");
         String pathFake = "";
         var registro = new RegistroInscriptosFake(pathFake);
-        Concurso unConcurso = new Concurso(1, "Un Concurso", fechaInicio, fechaFin, registro);
+        var servicioMensajeria = new ServiceMailFake();
+        Concurso unConcurso = new Concurso(1, "Un Concurso", fechaInicio, fechaFin, registro, servicioMensajeria);
         //exercise
         unConcurso.nuevaInscripcion(jose, fechaInscripcion);
         unConcurso.nuevaInscripcion(maria, fechaInscripcion2);
         String esperado = "15/03/2025, 1, 1\n" + "16/03/2025, 2, 1\n";
+
         //verify
         //++ comprobar que registroinscriptoFake esté bien programado ++//
         assertEquals(esperado.replace("\n", System.lineSeparator()), registro.data());
         assertTrue(unConcurso.participanteInscripto(jose));
         assertTrue(unConcurso.participanteInscripto(maria));
         assertEquals(2, unConcurso.cantidadInscriptos());
+        assertEquals("mperez@gmail.com - Inscripción: Usted a realizado la inscripción...", servicioMensajeria.mensaje());
+//        assertEquals("jperez@gmail.com - Inscripción: Usted a realizado la inscripción...", servicioMensajeria.mensaje());
+
     }
 
 
@@ -38,12 +44,13 @@ public class ConcursoTest {
     public void test02() throws IllegalAccessException {
         //un participante se inscribe en un concurso el primer dia de abierta la inscripción
         //setup
-        var maria = new Participante("234567", "Maria Perez", 1);
+        var maria = new Participante("234567", "Maria Perez", 1, "mperez@gmail.com");
         LocalDate fechaInicio = LocalDate.of(2025, 3, 1);
         LocalDate fechaFin = LocalDate.of(2025, 3, 31);
         String pathFake = "";
         var registro = new RegistroInscriptosFake(pathFake);
-        Concurso unConcurso = new Concurso(1, "Un Concurso", fechaInicio, fechaFin, registro);
+        var servicioMensajeria = new ServiceMailFake();
+        Concurso unConcurso = new Concurso(1, "Un Concurso", fechaInicio, fechaFin, registro, servicioMensajeria);
         //exercise
         unConcurso.nuevaInscripcion(maria, fechaInicio);
         String esperado = "01/03/2025, 1, 1\n";
@@ -51,31 +58,22 @@ public class ConcursoTest {
         assertEquals(esperado.replace("\n", System.lineSeparator()), registro.data());
         assertTrue(unConcurso.participanteInscripto(maria));
         assertEquals(1, unConcurso.cantidadInscriptos());
+        assertEquals("mperez@gmail.com - Inscripción: Usted a realizado la inscripción...", servicioMensajeria.mensaje());
 
     }
 
     @Test
     public void test03() {
-//        //un participante intenta inscribirse fuera del rango de inscripción
-//        //setup
-        var juana = new Participante("234567", "Juana Perez", 1);
+        //un participante intenta inscribirse fuera del rango de inscripción
+        //setup
+        var juana = new Participante("234567", "Juana Perez", 1, "juanaPerez@gmail.com");
         LocalDate fechaInicio = LocalDate.of(2025, 3, 1);
         LocalDate fechaFin = LocalDate.of(2025, 3, 31);
         LocalDate fechaInscripcion = LocalDate.of(2025, 5, 31);
         String pathFake = "";
         var registro = new RegistroInscriptosFake(pathFake);
-        Concurso unConcurso = new Concurso(1, "Un Concurso", fechaInicio, fechaFin, registro);
-//        //opcion 1
-////        //exercise & verify
-////        RuntimeException exception = assertThrows(RuntimeException.class, () -> unConcurso.nuevaInscripcion(juana, fechaInscripcion)); //puedo usar assert en exercise?
-////        unConcurso.export();
-////        String esperado = "dd/mm/yyyy, id_participante, id_concurso\n" +
-////                "05/03/2025,1,1\n";
-////        assertEquals(esperado.replace("\n", System.lineSeparator()), exportador.data());
-////        assertEquals("La fecha está fuera del rango de inscripción...", exception.getMessage());
-////        assertEquals(0, unConcurso.cantidadInscriptos());
-////        assertFalse(unConcurso.participanteInscripto(juana));
-//
+        var servicioMensajeria = new ServiceMailFake();
+        Concurso unConcurso = new Concurso(1, "Un Concurso", fechaInicio, fechaFin, registro, servicioMensajeria);
         //opcion 2 separar exercise de verify
         RuntimeException exception = null;
         try {
@@ -84,7 +82,7 @@ public class ConcursoTest {
             exception = exception1;
         }
         //Verify
-//        assertEquals(null, registro.data()); //No se llega a ejecutar el gestionarInscripcion
+//        assertEquals(null, registro.data()); //No se llega a ejecutar el gestionarInscripcion - no se ejecutan los servicios
         assertNotNull(exception);
         assertEquals("La fecha está fuera del rango de inscripción...", exception.getMessage());
         assertEquals(0, unConcurso.cantidadInscriptos());
