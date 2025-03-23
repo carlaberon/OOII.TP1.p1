@@ -8,11 +8,13 @@ public class Participante {
     private String dni;
     private String nombre;
     private int puntos;
+    private String email;
 
-    public Participante(String dni, String nombre, int id) {
+    public Participante(String dni, String nombre, int id, String email) {
         this.dni = dni;
         this.nombre = nombre;
         this.id = id;
+        this.email = email;
     }
 
     public void sumarPuntos() {
@@ -33,5 +35,9 @@ public class Participante {
 
     public int id() {
         return this.id;
+    }
+
+    public String email() {
+        return this.email;
     }
 }

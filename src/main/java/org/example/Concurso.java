@@ -17,8 +17,9 @@ public class Concurso {
     private LocalDate fechaFin;
     private LocalDate fechaInscripcion;
     private RegistroInscriptos registro;
+    private IMailService servicioMensajeria;
 
-    public Concurso(int id, String nombre, LocalDate fechaInicio, LocalDate fechaFin, RegistroInscriptos registro) {
+    public Concurso(int id, String nombre, LocalDate fechaInicio, LocalDate fechaFin, RegistroInscriptos registro, IMailService servicioMensajeria) {
         if (fechaInicio.isAfter(fechaFin)) {
             throw new RuntimeException(FECHA_INSCRIPCION_INCORRECTA);
         }
@@ -31,6 +32,7 @@ public class Concurso {
         this.fechaFin = fechaFin;
         this.id = id;
         this.registro = registro;
+        this.servicioMensajeria = servicioMensajeria;
 
     }
 
@@ -85,6 +87,7 @@ public class Concurso {
             //generar un archivo de texto, crear un archivo de texto, fecha +idparticipante + idconcurso
             //File object
             this.registro.registrarInscripto(fechaInscripcion, participante.id(), this.id);
+            this.servicioMensajeria.enviarCorreo(participante.email(), "Inscripción", "Usted a realizado la inscripción...");
         }
     }
 
