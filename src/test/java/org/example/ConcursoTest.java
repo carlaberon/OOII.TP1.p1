@@ -11,8 +11,8 @@ public class ConcursoTest {
     public void test01() throws IllegalAccessException {
         //un participante se inscribe en un concurso
         //setup
-        var jose = new Participante("234566", "Jose Perez", 1);
-        var maria = new Participante("234567", "Maria Perez", 2);
+        var jose = new Participante("234566", "Jose Perez", 1, "archcarlab@gmail.com");
+        var maria = new Participante("234567", "Maria Perez", 2, "archcarlab@gmail.com");
         LocalDate fechaInicio = LocalDate.of(2025, 3, 1);
         LocalDate fechaFin = LocalDate.of(2025, 3, 31);
         LocalDate fechaInscripcion = LocalDate.of(2025, 3, 15);
