@@ -29,7 +29,7 @@ public class RegistroInscriptosDAO implements RegistroInscriptos {
 
             statement.executeUpdate();
 
-
+            //ver
         } catch (SQLException e1) {
         } finally {
             try {

@@ -18,6 +18,7 @@ public class Concurso {
     private RegistroInscriptos registro;
     private IMailService servicioMensajeria;
 
+
     public Concurso(int id, String nombre, LocalDate fechaInicio, LocalDate fechaFin, RegistroInscriptos registro, IMailService servicioMensajeria) {
         if (fechaInicio.isAfter(fechaFin)) {
             throw new RuntimeException(FECHA_INSCRIPCION_INCORRECTA);
