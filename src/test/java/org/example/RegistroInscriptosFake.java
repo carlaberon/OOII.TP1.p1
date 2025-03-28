@@ -23,6 +23,10 @@ public class RegistroInscriptosFake implements RegistroInscriptos {
         return fechaFormateada;
     }
 
+    public boolean startWith(String start) {
+        return this.data.startsWith(start);
+    }
+
     public String data() {
         return this.data;
     }

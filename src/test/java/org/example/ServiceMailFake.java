@@ -1,14 +1,18 @@
 package org.example;
 
 public class ServiceMailFake implements IMailService {
-    private String mensaje;
+    private String mail;
 
     @Override
     public void enviarCorreo(String destinatario, String asunto, String mensaje) {
-        this.mensaje = destinatario + " - " + asunto + ": " + mensaje;
+        this.mail = destinatario + " - " + asunto + ": " + mensaje;
     }
 
-    public String mensaje() {
-        return this.mensaje;
+    public String mail() {
+        return this.mail;
+    }
+
+    public boolean startWith(String start) {
+        return this.mail.startsWith(start);
     }
 }

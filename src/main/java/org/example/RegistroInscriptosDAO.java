@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 
 public class RegistroInscriptosDAO implements RegistroInscriptos {
-
+    //data access object
     public RegistroInscriptosDAO() {
     }
 
@@ -29,7 +29,7 @@ public class RegistroInscriptosDAO implements RegistroInscriptos {
 
             statement.executeUpdate();
 
-            //ver
+
         } catch (SQLException e1) {
         } finally {
             try {
