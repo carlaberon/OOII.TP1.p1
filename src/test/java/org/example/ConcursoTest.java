@@ -35,7 +35,6 @@ public class ConcursoTest {
         assertTrue(unConcurso.participanteInscripto(maria));
         assertEquals(2, unConcurso.cantidadInscriptos());
         assertEquals("mperez@gmail.com - Inscripción: Usted a realizado la inscripción...", servicioMensajeriaFake.mail());
-        assertTrue(servicioMensajeriaFake.startWith("mperez@gmail.com"));
     }
 
 
@@ -47,18 +46,17 @@ public class ConcursoTest {
         LocalDate fechaInicio = LocalDate.of(2025, 3, 1);
         LocalDate fechaFin = LocalDate.of(2025, 3, 31);
         String pathFake = "";
-        var registro = new RegistroInscriptosFake(pathFake);
+        var registroInscriptosFake = new RegistroInscriptosFake(pathFake);
         var servicioMensajeria = new ServiceMailFake();
-        Concurso unConcurso = new Concurso(1, "Un Concurso", fechaInicio, fechaFin, registro, servicioMensajeria);
+        Concurso unConcurso = new Concurso(1, "Un Concurso", fechaInicio, fechaFin, registroInscriptosFake, servicioMensajeria);
         //exercise
         unConcurso.nuevaInscripcion(maria, fechaInicio);
         String esperado = "01/03/2025, 1, 1\n";
         //verify
-        assertEquals(esperado.replace("\n", System.lineSeparator()), registro.data());
+        assertEquals(esperado.replace("\n", System.lineSeparator()), registroInscriptosFake.data());
         assertTrue(unConcurso.participanteInscripto(maria));
         assertEquals(1, unConcurso.cantidadInscriptos());
         assertEquals("mperez@gmail.com - Inscripción: Usted a realizado la inscripción...", servicioMensajeria.mail());
-        assertTrue(servicioMensajeria.startWith("mperez@gmail.com"));
 
     }
 
@@ -83,12 +81,12 @@ public class ConcursoTest {
         }
         //Verify
         //verificar que al inscribir a un participante se invoque al m enviarCorreo
-//        assertEquals(null, registro.data()); //No se llega a ejecutar el gestionarInscripcion - no se ejecutan los servicios
+        assertEquals(0, unConcurso.cantidadInscriptos());
+        assertEquals(null, registro.data()); //No se llega a ejecutar el gestionarInscripcion - no se ejecutan los servicios
         assertNotNull(exception);
         assertEquals("La fecha está fuera del rango de inscripción...", exception.getMessage());
-        assertEquals(0, unConcurso.cantidadInscriptos());
         assertFalse(unConcurso.participanteInscripto(juana));
-        assertEquals(null, servicioMensajeria.mail());
+        assertTrue(servicioMensajeria.noSeEnvioElCorreo());
 
     }
 

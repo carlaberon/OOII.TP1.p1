@@ -8,16 +8,31 @@ import java.util.Properties;
 
 public class ServiceMail implements IMailService {
 
-    private final String username = "e0d3a5cbd9a31c";
-    private final String password = "eff9a8ce985569";
+    private final String username;
+    private final String password;
+    private final String habilitarAutenticacion;
+    private final String activarSoporteTLS;
+    private final String host;
+    private final String puerto;
+
+
+    public ServiceMail(String pwd, String username, String habilitarAutenticacion, String activarSoporteTLS1, String host, String puerto1) {
+        this.password = pwd;
+        this.username = username;
+        this.habilitarAutenticacion = habilitarAutenticacion;
+        this.activarSoporteTLS = activarSoporteTLS1;
+        this.host = host;
+        this.puerto = puerto1;
+
+    }
 
     @Override
     public void enviarCorreo(String destinatario, String asunto, String mensaje) {
         Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "sandbox.smtp.mailtrap.io");
-        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", this.habilitarAutenticacion);
+        props.put("mail.smtp.starttls.enable", this.activarSoporteTLS);
+        props.put("mail.smtp.host", this.host);
+        props.put("mail.smtp.port", this.puerto);
 
         Session session = Session.getInstance(props, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -34,7 +49,7 @@ public class ServiceMail implements IMailService {
             Transport.send(msg);
 
         } catch (MessagingException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

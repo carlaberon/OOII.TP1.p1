@@ -12,7 +12,7 @@ public class ServiceMailFake implements IMailService {
         return this.mail;
     }
 
-    public boolean startWith(String start) {
-        return this.mail.startsWith(start);
+    public boolean noSeEnvioElCorreo() {
+        return this.mail == null;
     }
 }

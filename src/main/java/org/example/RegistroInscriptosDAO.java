@@ -27,15 +27,21 @@ public class RegistroInscriptosDAO implements RegistroInscriptos {
             statement.setInt(2, id);
             statement.setInt(3, id1);
 
-            statement.executeUpdate();
+            int a = statement.executeUpdate();
+            if (a == 0) {
+                throw new RuntimeException("No fue posible realizar la carga");
+            }
 
 
         } catch (SQLException e1) {
+            //excepcion
+            throw new RuntimeException("SQLException", e1);
         } finally {
             try {
                 ConnectionManager.disconnect();
             } catch (SQLException e) {
-
+                //excepcion
+                throw new RuntimeException("SQLException", e);
             }
         }
     }
