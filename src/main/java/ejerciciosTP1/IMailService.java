@@ -1,4 +1,4 @@
-package org.example;
+package ejerciciosTP1;
 
 public interface IMailService {
 

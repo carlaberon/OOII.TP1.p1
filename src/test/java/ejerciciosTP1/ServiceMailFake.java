@@ -1,4 +1,4 @@
-package org.example;
+package ejerciciosTP1;
 
 public class ServiceMailFake implements IMailService {
     private String mail;

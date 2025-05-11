@@ -1,4 +1,4 @@
-package org.example;
+package ejerciciosTP1;
 
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
@@ -53,5 +53,3 @@ public class ServiceMail implements IMailService {
         }
     }
 }
-
-

@@ -1,4 +1,4 @@
-package org.example;
+package ejerciciosTP1;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

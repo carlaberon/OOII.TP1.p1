@@ -1,4 +1,4 @@
-package org.example;
+package ejerciciosTP1;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

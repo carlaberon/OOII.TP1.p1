@@ -1,4 +1,4 @@
-package org.example;
+package ejerciciosTP1;
 
 import org.junit.jupiter.api.Test;
 
