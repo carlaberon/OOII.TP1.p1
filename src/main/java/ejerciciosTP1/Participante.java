@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Participante {
 
+    public static final int PUNTOS_GANADOS = 10;
     private int id;
     private String dni;
     private String nombre;
@@ -18,7 +19,7 @@ public class Participante {
     }
 
     public void sumarPuntos() {
-        this.puntos += puntos;
+        this.puntos += PUNTOS_GANADOS;
     }
 
     @Override

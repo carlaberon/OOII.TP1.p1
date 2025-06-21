@@ -26,6 +26,10 @@ public class Concurso {
         if (fechaFin.isBefore(fechaInicio)) {
             throw new RuntimeException(FECHA_INSCRIPCION_INCORRECTA);
         }
+        if (esFechaNula(fechaInicio) || esFechaNula(fechaFin)) {
+            throw new RuntimeException(FECHAINSCRIPCION_VACIA);
+        }
+
         this.nombre = nombre;
         this.inscriptos = new ArrayList<>();
         this.fechaInicio = fechaInicio;
@@ -82,7 +86,7 @@ public class Concurso {
     }
 
     public void gestionarPuntos(Participante participante, LocalDate fechaInscripcion) {
-        if (this.fechaFin.isEqual(fechaInscripcion)) {
+        if (this.fechaInicio.isEqual(fechaInscripcion)) {
             participante.sumarPuntos();
         }
     }
@@ -95,5 +99,10 @@ public class Concurso {
         return this.id;
     }
 
-
+    private boolean esFechaNula(LocalDate fecha) {
+        if (fecha == null) {
+            return true;
+        }
+        return false;
+    }
 }

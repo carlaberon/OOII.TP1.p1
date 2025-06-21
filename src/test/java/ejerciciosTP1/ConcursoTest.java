@@ -82,7 +82,7 @@ public class ConcursoTest {
         //Verify
         //verificar que al inscribir a un participante se invoque al m enviarCorreo
         assertEquals(0, unConcurso.cantidadInscriptos());
-        assertEquals(null, registro.data()); //No se llega a ejecutar el gestionarInscripcion - no se ejecutan los servicios
+        assertEquals("", registro.data()); //No se llega a ejecutar el gestionarInscripcion - no se ejecutan los servicios
         assertNotNull(exception);
         assertEquals("La fecha está fuera del rango de inscripción...", exception.getMessage());
         assertFalse(unConcurso.participanteInscripto(juana));
